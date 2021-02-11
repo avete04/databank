@@ -32,7 +32,7 @@
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
 			<div class="account-content">
-				{{-- <a href="job-list" class="btn btn-primary apply-btn">Apply Job</a> --}}
+				
 				<div class="container">
 
 					<!-- Account Logo -->
@@ -93,3 +93,4 @@
 
     </body>
 </html>
+<?php /**PATH C:\Users\avenson\Desktop\databank\resources\views/login.blade.php ENDPATH**/ ?>

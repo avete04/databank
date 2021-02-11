@@ -70,3 +70,4 @@
     <!-- /Mobile Menu -->
 
 </div>
+<?php /**PATH C:\Users\avenson\Desktop\databank\resources\views/layout/partials/header.blade.php ENDPATH**/ ?>

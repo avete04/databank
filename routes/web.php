@@ -13,17 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function () {
-        return view('index');
+        return view('employees');
     });
-    
+
     Route::get('/home', function () {
-        return view('index');
+        return view('employees');
     });
 
 
 
 Route::get('/index', function () {
-    return view('index');
+    return view('employees');
 })->name('page');
 
 Route::get('/employee-dashboard', function () {

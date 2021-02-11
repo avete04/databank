@@ -46,3 +46,4 @@
         <link rel="stylesheet" href="css/style.css">
 
     </head>
+<?php /**PATH C:\Users\avenson\Desktop\databank\resources\views/layout/partials/head.blade.php ENDPATH**/ ?>
