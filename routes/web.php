@@ -23,6 +23,20 @@ Route::get('/get_all_department', 'DepartmentController@get_all_department')->na
 //designation
 Route::post('/add_designation', 'DesignationController@add_designation')->name('designation.create');
 Route::post('/get_designation', 'DesignationController@get_designation')->name('designation.get');
+Route::post('/update_designation', 'DesignationController@update_designation')->name('designation.update');
+Route::post('delete_designation', 'DesignationController@delete_designation')->name('designation.delete');
+
+Route::prefix('employee')->group(function(){
+    //employee
+    Route::post('/add_employee', 'EmployeeController@add_employee')->name('employee.create');
+    Route::get('/get_all_employee', 'EmployeeController@get_all_employee')->name('employee.get_all');
+    Route::post('/get_employee', 'EmployeeController@get_employee')->name('employee.get');
+    Route::post('/update_employee', 'EmployeeController@update_employee')->name('employee.update');
+    Route::post('/delete_employee', 'EmployeeController@delete_employee')->name('employee.delete');
+});
+
+Route::post('/add_personal_info', 'PersonalInfoController@add_personal_info')->name('personal_info.create');
+Route::post('/get_personal_info', 'PersonalInfoController@get_personal_info')->name('personal_info.get');
 
 Route::get('/', function () {
         return view('employees');

@@ -4,6 +4,7 @@
     use App\Designation;
     $designations = DB::table('designations')
     ->join('departments', 'departments.id', '=', 'designations.department_id')
+    ->select('designations.id as designation_id', 'departments.id as department_id', 'designations.*', 'departments.*')
     ->get();
 ?>
 
@@ -68,15 +69,81 @@ function get_designation(id)
         if(res.data.status == 1)
         {
             res.data.message.forEach(e => {
-                if(e.id == id)
+                if(id == e.designation_id)
                 {
                     $('#edit_designation_name').val(e.designation_name)
                     $('#edit_department_id').val(e.department_id)
-                    console.log(e)
+                    $('#designation_id').val(e.designation_id)
                 }
             })
         }
     });
+}
+
+function update_designation(id)
+{
+    let data = {
+        designation_id:designation_id.value,
+        designation_name:edit_designation_name.value,
+        department_id:edit_department_id.value
+    }
+
+    axios.post("<?php echo e(route('designation.update')); ?>", data).then(res => {
+        if(res.data.status == 1)
+        {
+            Swal.fire(
+                'Success',
+                res.data.message,
+                'success'
+            )
+
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        }
+        else
+        {
+            Swal.fire(
+                'Failed',
+                res.data.message,
+                'error'
+            )
+        }
+    });
+}
+
+function delete_designation(id)
+{
+    let data = {
+        designation_id:id
+    }
+
+    Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.post("<?php echo e(route('designation.delete')); ?>", data).then(res => {
+                if(res.data.status == 1)
+                {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+
+                    setTimeout(() => {
+                        location.reload();
+                    }, 500);
+                }
+            });
+        }
+    })
 }
 
 </script>
@@ -87,7 +154,7 @@ function get_designation(id)
 
             <!-- Page Content -->
             <div class="content container-fluid">
-
+<input type="hidden" id="designation_id">
                 <!-- Page Header -->
                 <div class="page-header">
                     <div class="row align-items-center">
@@ -120,15 +187,15 @@ function get_designation(id)
                                 <tbody>
                                     <?php $__currentLoopData = $designations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $designation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
-                                            <td><?php echo e($designation->id); ?></td>
+                                            <td><?php echo e($designation->designation_id); ?></td>
                                             <td><?php echo e($designation->designation_name); ?></td>
                                             <td><?php echo e($designation->department_name); ?></td>
                                             <td class="text-right">
                                             <div class="dropdown dropdown-action">
                                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation" onclick="get_designation(<?php echo e($designation->id); ?>)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation" onclick="get_designation(<?php echo e($designation->designation_id); ?>)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    <a class="dropdown-item" href="#" onclick="delete_designation(<?php echo e($designation->designation_id); ?>)"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                 </div>
                                                 </div>
                                             </td>
@@ -185,7 +252,7 @@ function get_designation(id)
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form action="javascript:void(0)">
                                 <div class="form-group">
                                     <label>Designation Name <span class="text-danger">*</span></label>
                                     <input class="form-control" id="edit_designation_name" type="text">
@@ -197,7 +264,7 @@ function get_designation(id)
                                     </select>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Save</button>
+                                    <button class="btn btn-primary submit-btn" onclick="update_designation(designation_id.value)">Save</button>
                                 </div>
                             </form>
                         </div>

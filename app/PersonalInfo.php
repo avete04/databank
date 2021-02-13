@@ -16,4 +16,9 @@ class PersonalInfo extends Model
         'employment_of_spouse',
         'no_of_children'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

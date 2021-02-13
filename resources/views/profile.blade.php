@@ -1,5 +1,129 @@
 @extends('layout.mainlayout')
 @section('content')
+
+@php
+    use App\Department;
+    use App\Designation;
+
+    $designations = Designation::all();
+    $departments = Department::all();
+@endphp
+
+<script>
+    let url = new URL(window.location);
+    let emp_id = url.searchParams.get('id');
+
+    let data = {
+        user_id:emp_id
+    }
+
+    axios.post("{{route('employee.get')}}", data).then(res => {
+        if(res.data.status == 1)
+        {
+            $('#profile_name').text(`${res.data.message.first_name} ${res.data.message.last_name}`)
+            $('#profile_department_name').text(`${res.data.message.department_name}`)
+            $('#profile_department_name').text(`${res.data.message.department_name}`)
+            $('#profile_designation_name').text(`${res.data.message.designation_name}`)
+            $('#profile_employee_id').text(`Employee ID: ${res.data.message.employee_id}`)
+            $('#profile_join_date').text(`Date of Join: ${res.data.message.join_date}`)
+            $('#profile_mobile_no').text(`${res.data.message.mobile_no}`)
+            $('#profile_email').text(`${res.data.message.email}`)
+            $('#profile_birth_day').text(`${res.data.message.birth_day}`)
+            $('#profile_address').text(`${res.data.message.address}`)
+            $('#profile_gender').text(`${res.data.message.gender}`)
+
+
+            $('#edit_first_name').val(res.data.message.first_name)
+            $('#edit_last_name').val(res.data.message.last_name)
+            $('#edit_birth_day').val(res.data.message.birth_day)
+            $('#edit_gender').val(res.data.message.gender)
+            $('#edit_address').val(res.data.message.address)
+            $('#edit_mobile_no').val(res.data.message.mobile_no)
+            $('#edit_department_id').val(res.data.message.department_id)
+            $('#edit_designation_id').val(res.data.message.designation_id)
+        }
+    });
+
+    function update_employee()
+    {
+        let data = {
+            user_id:emp_id,
+            first_name: $('#edit_first_name').val(),
+            last_name: $('#edit_last_name').val(),
+            address:$('#edit_address').val(),
+            birth_day:$('#edit_birth_day').val(),
+            gender:$('#edit_gender').val(),
+            mobile_no:$('#edit_mobile_no').val(),
+            department_id:$('#edit_department_id').val(),
+            designation_id:$('#edit_designation_id').val()
+        }
+
+        axios.post("{{route('employee.update')}}", data).then(res => {
+            if(res.data.status == 1)
+            {
+                Swal.fire(
+                    'Success',
+                    res.data.message,
+                    'success'
+                )
+
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            }
+        });
+    }
+
+    function add_personal_info()
+    {
+        let data = {
+            user_id:emp_id,
+            religion:religion.value,
+            marital_status:marital_status.value,
+            employment_of_spouse:employment_of_spouse.value,
+            no_of_children:no_of_children.value
+        }
+
+        axios.post("{{route('personal_info.create')}}", data).then(res => {
+            if(res.data.status == 1)
+            {
+                Swal.fire(
+                    'Success',
+                    res.data.message,
+                    'success'
+                )
+
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            }
+        });
+    }
+
+    get_personal_info()
+    function get_personal_info()
+    {
+        let data = {
+            user_id:emp_id
+        }
+
+        axios.post("{{route('personal_info.get')}}", data).then(res => {
+            if(res.data.status == 1)
+            {
+                $('#profile_religion').text(res.data.message.religion)
+                $('#profile_marital_status').text(res.data.message.marital_status)
+                $('#profile_employment_of_spouse').text(res.data.message.employment_of_spouse)
+                $('#profile_no_of_children').text(res.data.message.no_of_children)
+
+                $('#religion').val(res.data.message.religion)
+                $('#marital_status').val(res.data.message.marital_status)
+                $('#employment_of_spouse').val(res.data.message.employment_of_spouse)
+                $('#no_of_children').val(res.data.message.no_of_children)
+            }
+        });
+    }
+</script>
+
 <!-- Page Wrapper -->
 <div class="page-wrapper">
 
@@ -34,34 +158,34 @@
                                         <div class="row">
                                             <div class="col-md-5">
                                                 <div class="profile-info-left">
-                                                    <h3 class="user-name m-t-0 mb-0">John Doe</h3>
-                                                    <h6 class="text-muted">UI/UX Design Team</h6>
-                                                    <small class="text-muted">Web Designer</small>
-                                                    <div class="staff-id">Employee ID : FT-0001</div>
-                                                    <div class="small doj text-muted">Date of Join : 1st Jan 2013</div>
+                                                    <h3 class="user-name m-t-0 mb-0" id="profile_name"></h3>
+                                                    <h6 class="text-muted" id="profile_department_name"></h6>
+                                                    <small class="text-muted" id="profile_designation_name"></small>
+                                                    <div class="staff-id" id="profile_employee_id"></div>
+                                                    <div class="small doj text-muted" id="profile_join_date"></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-7">
                                                 <ul class="personal-info">
                                                     <li>
                                                         <div class="title">Phone:</div>
-                                                        <div class="text"><a href="">9876543210</a></div>
+                                                        <div class="text"><a href="#" id="profile_mobile_no"></a></div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Email:</div>
-                                                        <div class="text"><a href="">johndoe@example.com</a></div>
+                                                        <div class="text"><a href="#" id="profile_email"></a></div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Birthday:</div>
-                                                        <div class="text">24th July</div>
+                                                        <div class="text" id="profile_birth_day"></div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Address:</div>
-                                                        <div class="text">1861 Bayonne Ave, Manchester Township, NJ, 08759</div>
+                                                        <div class="text" id="profile_address"></div>
                                                     </li>
                                                     <li>
                                                         <div class="title">Gender:</div>
-                                                        <div class="text">Male</div>
+                                                        <div class="text" id="profile_gender"></div>
                                                     </li>
 
                                                 </ul>
@@ -80,7 +204,7 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
                             <ul class="nav nav-tabs nav-tabs-bottom">
                                 <li class="nav-item"><a href="#emp_profile" data-toggle="tab" class="nav-link active">Profile</a></li>
-                                <li class="nav-item"><a href="#emp_projects" data-toggle="tab" class="nav-link">Projects</a></li>
+                                <li class="nav-item"><a href="#emp_projects" data-toggle="tab" class="nav-link">Attachments</a></li>
                             </ul>
                         </div>
                     </div>
@@ -97,24 +221,20 @@
                                         <h3 class="card-title">Personal Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#personal_info_modal"><i class="fa fa-pencil"></i></a></h3>
                                         <ul class="personal-info">
                                             <li>
-                                                <div class="title">Nationality</div>
-                                                <div class="text">Indian</div>
-                                            </li>
-                                            <li>
                                                 <div class="title">Religion</div>
-                                                <div class="text">Christian</div>
+                                                <div class="text" id="profile_religion"></div>
                                             </li>
                                             <li>
                                                 <div class="title">Marital status</div>
-                                                <div class="text">Married</div>
+                                                <div class="text" id="profile_marital_status"></div>
                                             </li>
                                             <li>
                                                 <div class="title">Employment of spouse</div>
-                                                <div class="text">No</div>
+                                                <div class="text" id="profile_employment_of_spouse"></div>
                                             </li>
                                             <li>
                                                 <div class="title">No. of children</div>
-                                                <div class="text">2</div>
+                                                <div class="text" id="profile_no_of_children"></div>
                                             </li>
                                         </ul>
                                     </div>
@@ -139,53 +259,12 @@
                                                 <div class="text">9876543210, 9876543210</div>
                                             </li>
                                         </ul>
-                                        <hr>
-                                        <h5 class="section-title">Secondary</h5>
-                                        <ul class="personal-info">
-                                            <li>
-                                                <div class="title">Name</div>
-                                                <div class="text">Karen Wills</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Relationship</div>
-                                                <div class="text">Brother</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Phone </div>
-                                                <div class="text">9876543210, 9876543210</div>
-                                            </li>
-                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 d-flex">
-                                <div class="card profile-box flex-fill">
-                                    <div class="card-body">
-                                        <h3 class="card-title">Bank information</h3>
-                                        <ul class="personal-info">
-                                            <li>
-                                                <div class="title">Bank name</div>
-                                                <div class="text">ICICI Bank</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Bank account No.</div>
-                                                <div class="text">159843014641</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">IFSC Code</div>
-                                                <div class="text">ICI24504</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">PAN No</div>
-                                                <div class="text">TC000Y56</div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 d-flex">
+                            <div class="col-md-12 d-flex">
                                 <div class="card profile-box flex-fill">
                                     <div class="card-body">
                                         <h3 class="card-title">Family Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#family_info_modal"><i class="fa fa-pencil"></i></a></h3>
@@ -337,7 +416,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form action="javascript:void(0)">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="profile-img-wrap edit-img">
@@ -351,29 +430,30 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>First Name</label>
-                                                    <input type="text" class="form-control" value="John">
+                                                    <input type="text" class="form-control" id="edit_first_name">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Last Name</label>
-                                                    <input type="text" class="form-control" value="Doe">
+                                                    <input type="text" class="form-control" id="edit_last_name">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Birth Date</label>
                                                     <div class="cal-icon">
-                                                        <input class="form-control datetimepicker" type="text" value="05/06/1985">
+                                                        <input class="form-control" type="date" id="edit_birth_day">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Gender</label>
-                                                    <select class="select form-control">
-                                                        <option value="male selected">Male</option>
-                                                        <option value="female">Female</option>
+                                                    <select class="form-control" id="edit_gender">
+                                                        <option value="">Select Gender</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -384,41 +464,39 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <input type="text" class="form-control" value="4487 Snowbird Lane">
+                                            <input type="text" class="form-control" id="edit_address">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Phone Number</label>
-                                            <input type="text" class="form-control" value="631-889-3206">
+                                            <input type="text" class="form-control" id="edit_mobile_no">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Department <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Department</option>
-                                                <option>Web Development</option>
-                                                <option>IT Management</option>
-                                                <option>Marketing</option>
+                                            <select class="form-control" id="edit_department_id">
+                                                @foreach($departments as $department)
+                                                    <option value="{{$department->id}}">{{$department->department_name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Designation <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Designation</option>
-                                                <option>Web Designer</option>
-                                                <option>Web Developer</option>
-                                                <option>Android Developer</option>
+                                            <select class="form-control" id="edit_designation_id">
+                                                @foreach($designations as $designation)
+                                                    <option value="{{$designation->id}}">{{$designation->designation_name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button class="btn btn-primary submit-btn" onclick="update_employee()">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -438,47 +516,42 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form action="javascript:void(0)">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Nationality <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Religion</label>
                                             <div class="cal-icon">
-                                                <input class="form-control" type="text">
+                                                <input class="form-control" type="text" id="religion">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Marital status <span class="text-danger">*</span></label>
-                                            <select class="select form-control">
+                                            <select class="form-control" id="marital_status">
                                                 <option>-</option>
-                                                <option>Single</option>
-                                                <option>Married</option>
+                                                <option value="Single">Single</option>
+                                                <option value="Married">Married</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Employment of spouse</label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" id="employment_of_spouse">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>No. of children </label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" id="no_of_children">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button class="btn btn-primary submit-btn" onclick="add_personal_info()">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -589,38 +662,6 @@
                         </div>
                         <div class="modal-body">
                             <form>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h3 class="card-title">Primary Contact</h3>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Name <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Relationship <span class="text-danger">*</span></label>
-                                                    <input class="form-control" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Phone <span class="text-danger">*</span></label>
-                                                    <input class="form-control" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Phone 2</label>
-                                                    <input class="form-control" type="text">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="card">
                                     <div class="card-body">
                                         <h3 class="card-title">Primary Contact</h3>

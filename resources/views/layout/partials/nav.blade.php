@@ -246,9 +246,9 @@
                                 <a class="{{ Request::is('performance-indicator') ? 'active' : '' }}" href="{{ url('performance-indicator') }}"> Performance Indicator </a>
                             </li>
 
-                            <li>
+                            {{-- <li>
                                 <a class="{{ Request::is('performance') ? 'active' : '' }}" href="{{ url('performance') }}"> Performance Review </a>
-                            </li>
+                            </li> --}}
 
                             <li>
                                 <a class="{{ Request::is('performance-appraisal') ? 'active' : '' }}" href="{{ url('performance-appraisal') }}"> Performance Appraisal </a>
@@ -347,23 +347,23 @@
                     </li> -->
 
 
-                    <li class="menu-title">
+                    {{-- <li class="menu-title">
                         <span>Pages</span>
                     </li>
                     <li class="submenu">
                         <a href="#"><i class="la la-user"></i> <span> Profile </span> <span class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-
+                        <ul style="display: none;"> --}}
+{{--
 
                             <li>
                                 <a class="{{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"> Employee Profile </a>
-                            </li>
+                            </li> --}}
 
                             <!-- <li>
                                 <a class="{{ Request::is('client-profile') ? 'active' : '' }}" href="{{ url('client-profile') }}"> Client Profile </a>
                             </li> -->
-                        </ul>
-                    </li>
+                        {{-- </ul>
+                    </li> --}}
 
                     <!-- <li class="submenu">
                         <a href="#"><i class="la la-key"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>

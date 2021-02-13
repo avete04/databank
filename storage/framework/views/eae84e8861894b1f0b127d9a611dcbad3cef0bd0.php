@@ -246,9 +246,7 @@
                                 <a class="<?php echo e(Request::is('performance-indicator') ? 'active' : ''); ?>" href="<?php echo e(url('performance-indicator')); ?>"> Performance Indicator </a>
                             </li>
 
-                            <li>
-                                <a class="<?php echo e(Request::is('performance') ? 'active' : ''); ?>" href="<?php echo e(url('performance')); ?>"> Performance Review </a>
-                            </li>
+                            
 
                             <li>
                                 <a class="<?php echo e(Request::is('performance-appraisal') ? 'active' : ''); ?>" href="<?php echo e(url('performance-appraisal')); ?>"> Performance Appraisal </a>
@@ -347,23 +345,13 @@
                     </li> -->
 
 
-                    <li class="menu-title">
-                        <span>Pages</span>
-                    </li>
-                    <li class="submenu">
-                        <a href="#"><i class="la la-user"></i> <span> Profile </span> <span class="menu-arrow"></span></a>
-                        <ul style="display: none;">
+                    
 
-
-                            <li>
-                                <a class="<?php echo e(Request::is('profile') ? 'active' : ''); ?>" href="<?php echo e(url('profile')); ?>"> Employee Profile </a>
-                            </li>
 
                             <!-- <li>
                                 <a class="<?php echo e(Request::is('client-profile') ? 'active' : ''); ?>" href="<?php echo e(url('client-profile')); ?>"> Client Profile </a>
                             </li> -->
-                        </ul>
-                    </li>
+                        
 
                     <!-- <li class="submenu">
                         <a href="#"><i class="la la-key"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>

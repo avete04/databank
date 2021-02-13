@@ -37,6 +37,7 @@ class DesignationController extends Controller
     {
         $designation = DB::table('designations')
         ->join('departments', 'departments.id', '=', 'designations.department_id')
+        ->select('designations.id as designation_id', 'departments.id as department_id', 'designations.*', 'departments.*')
         ->get();
 
         if($designation)
@@ -52,6 +53,53 @@ class DesignationController extends Controller
                 'status' => 0,
                 'message' => 'Designation not found.'
             ], 404);
+        }
+    }
+
+    public function update_designation(Request $request)
+    {
+        $designation = Designation::find($request->get('designation_id'));
+
+        if($designation)
+        {
+            $designation->designation_name = $request->get('designation_name');
+            $designation->department_id = $request->get('department_id');
+
+            $designation->save();
+
+            return response()->json([
+                'status' => 1,
+                'message' => 'Data has been updated.'
+            ], 200);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Failed to update data.'
+            ], 500);
+        }
+    }
+
+    public function delete_designation(Request $request)
+    {
+        $designation = Designation::find($request->get('designation_id'));
+
+        if($designation)
+        {
+            $designation->delete();
+
+            return response()->json([
+                'status' => 1,
+                'message' => 'Data has been deleted.'
+            ], 200);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Failed to delete data.'
+            ], 500);
         }
     }
 }
