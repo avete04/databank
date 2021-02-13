@@ -1,10 +1,10 @@
 <!-- jQuery -->
 <script src="js/jquery-3.2.1.min.js"></script>
-		
+
 		<!-- Bootstrap Core JS -->
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-		
+
 		<!-- Slimscroll JS -->
 		<script src="js/jquery.slimscroll.min.js"></script>
 		<!-- Select2 JS -->
@@ -12,11 +12,11 @@
 
 		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/jquery.ui.touch-punch.min.js"></script>
-		
+
 		<!-- Datetimepicker JS -->
 		<script src="js/moment.min.js"></script>
 		<script src="js/bootstrap-datetimepicker.min.js"></script>
-		
+
 		<!-- Calendar JS -->
 		<script src="js/jquery-ui.min.js"></script>
         <script src="js/fullcalendar.min.js"></script>
@@ -31,8 +31,8 @@
 
 		<!-- Summernote JS -->
 		<script src="plugins/summernote/dist/summernote-bs4.min.js"></script>
-		
-			
+
+
 		<script src="plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
 
 		<!-- Task JS -->
@@ -46,7 +46,7 @@
 		<script>
 		 $(document).ready(function(){
 
-		
+
 
 
 
@@ -57,11 +57,11 @@
         $("#customRange").change(function(){
             $("#result b").html($(this).val());
         });
-    });        
+    });
 		$(".header").stick_in_parent({
-			
+
 		});
-		// This is for the sticky sidebar    
+		// This is for the sticky sidebar
 		$(".stickyside").stick_in_parent({
 			offset_top: 60
 		});
@@ -131,4 +131,4 @@
 			}
 		});
 		</script>
-	<?php /**PATH C:\Users\avenson\Desktop\databank\resources\views/layout/partials/footer-scripts.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\avenson\Desktop\databank\resources\views/layout/partials/footer-scripts.blade.php ENDPATH**/ ?>

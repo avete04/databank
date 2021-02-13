@@ -12,6 +12,18 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//department
+Route::post('/add_department', 'DepartmentController@add_department')->name('department.create');
+Route::post('/get_department', 'DepartmentController@get_department')->name('department.get');
+Route::post('/update_department', 'DepartmentController@update_department')->name('department.update');
+Route::post('/delete_department', 'DepartmentController@delete_department')->name('department.delete');
+Route::get('/get_all_department', 'DepartmentController@get_all_department')->name('department.get_all');
+
+//designation
+Route::post('/add_designation', 'DesignationController@add_designation')->name('designation.create');
+Route::post('/get_designation', 'DesignationController@get_designation')->name('designation.get');
+
 Route::get('/', function () {
         return view('employees');
     });

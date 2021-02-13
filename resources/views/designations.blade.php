@@ -1,11 +1,95 @@
 @extends('layout.mainlayout')
 @section('content')
+
+@php
+    use App\Designation;
+    $designations = DB::table('designations')
+    ->join('departments', 'departments.id', '=', 'designations.department_id')
+    ->get();
+@endphp
+
+<script>
+get_all_department()
+function get_all_department()
+{
+    axios.get("{{route('department.get_all')}}").then(res => {
+        if(res.data.lenght != 0)
+        {
+            res.data.forEach(e => {
+                $('#department_id').append(`
+                    <option value="${e.id}">${e.department_name}</option>
+                `)
+                $('#edit_department_id').append(`
+                    <option value="${e.id}">${e.department_name}</option>
+                `)
+            });
+
+        }
+    });
+}
+
+function add_designtion()
+{
+    let data = {
+        designation_name:designation_name.value,
+        department_id:department_id.value
+    }
+
+    axios.post("{{route('designation.create')}}", data).then(res => {
+        if(res.data.status == 1)
+        {
+            Swal.fire(
+                'Success',
+                res.data.message,
+                'success'
+            )
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        }
+        else
+        {
+            Swal.fire(
+                'Failed',
+                res.data.message,
+                'error'
+            )
+        }
+    });
+}
+
+function get_designation(id)
+{
+    let data = {
+        designation_id:id
+    }
+
+    axios.post("{{route('designation.get')}}", data).then(res => {
+        if(res.data.status == 1)
+        {
+            res.data.message.forEach(e => {
+                if(e.id == id)
+                {
+                    $('#edit_designation_name').val(e.designation_name)
+                    $('#edit_department_id').val(e.department_id)
+                    $('#designation_id').val(e.id)
+                    console.log(e)
+                }
+            })
+        }
+    });
+}
+
+</script>
+
+
 <!-- Page Wrapper -->
 <div class="page-wrapper">
-			
+
             <!-- Page Content -->
             <div class="content container-fluid">
-            
+<input type="hidden" id="designation_id">
                 <!-- Page Header -->
                 <div class="page-header">
                     <div class="row align-items-center">
@@ -22,7 +106,7 @@
                     </div>
                 </div>
                 <!-- /Page Header -->
-                
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
@@ -36,216 +120,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Web Designer</td>
-                                        <td>Web Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Web Developer</td>
-                                        <td>Web Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Android Developer</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>IOS Developer</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>UI Designer</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>UX Designer</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>IT Technician</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>Product Manager</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>SEO Analyst</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>Front End Designer</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>11</td>
-                                        <td>Front End Developer</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>12</td>
-                                        <td>Systems Engineer</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>13</td>
-                                        <td>Systems Administrator</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>14</td>
-                                        <td>Technical Lead</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>15</td>
-                                        <td>Quality Assurance</td>
-                                        <td>Application Development</td>
-                                        <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                            </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @foreach($designations as $designation)
+                                        <tr>
+                                            <td>{{$designation->id}}</td>
+                                            <td>{{$designation->designation_name}}</td>
+                                            <td>{{$designation->department_name}}</td>
+                                            <td class="text-right">
+                                            <div class="dropdown dropdown-action">
+                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation" onclick="get_designation({{$designation->id}})"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -265,22 +155,19 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form action="javascript:void(0)">
                                 <div class="form-group">
                                     <label>Designation Name <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text">
+                                    <input class="form-control" type="text" id="designation_name">
                                 </div>
                                 <div class="form-group">
                                     <label>Department <span class="text-danger">*</span></label>
-                                    <select class="select">
-                                        <option>Select Department</option>
-                                        <option>Web Development</option>
-                                        <option>IT Management</option>
-                                        <option> 	Marketing</option>
+                                    <select class="select" id="department_id">
+                                        <option value="">Select Department</option>
                                     </select>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button class="btn btn-primary submit-btn" onclick="add_designtion()">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -288,7 +175,7 @@
                 </div>
             </div>
             <!-- /Add Designation Modal -->
-            
+
             <!-- Edit Designation Modal -->
             <div id="edit_designation" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -303,15 +190,12 @@
                             <form>
                                 <div class="form-group">
                                     <label>Designation Name <span class="text-danger">*</span></label>
-                                    <input class="form-control" value="Web Developer" type="text">
+                                    <input class="form-control" id="edit_designation_name" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label>Department <span class="text-danger">*</span></label>
-                                    <select class="select">
-                                        <option>Select Department</option>
-                                        <option>Web Development</option>
-                                        <option>IT Management</option>
-                                        <option>Marketing</option>
+                                    <select class="form-control" id="edit_department_id">
+
                                     </select>
                                 </div>
                                 <div class="submit-section">
@@ -323,7 +207,7 @@
                 </div>
             </div>
             <!-- /Edit Designation Modal -->
-            
+
             <!-- Delete Designation Modal -->
             <div class="modal custom-modal fade" id="delete_designation" role="dialog">
                 <div class="modal-dialog modal-dialog-centered">
@@ -348,7 +232,7 @@
                 </div>
             </div>
             <!-- /Delete Designation Modal -->
-        
+
         </div>
         <!-- /Page Wrapper -->
 @endsection

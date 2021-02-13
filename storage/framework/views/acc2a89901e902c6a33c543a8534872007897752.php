@@ -3,11 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <meta name="description" content="Smarthr - Bootstrap Admin Template">
-		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
-        <meta name="author" content="Dreamguys - Bootstrap Admin Template">
-        <meta name="robots" content="noindex, nofollow">
+        
         <title>Dashboard - Employee Databank</title>
+
 
 		<!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
@@ -44,6 +42,9 @@
 
 		<!-- Main CSS -->
         <link rel="stylesheet" href="css/style.css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     </head>
 <?php /**PATH C:\Users\avenson\Desktop\databank\resources\views/layout/partials/head.blade.php ENDPATH**/ ?>
