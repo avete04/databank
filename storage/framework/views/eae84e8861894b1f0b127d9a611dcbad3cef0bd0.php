@@ -242,9 +242,7 @@
                         <a href="#"><i class="la la-graduation-cap"></i> <span> Performance </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <li>
-                                <a class="<?php echo e(Request::is('performance-indicator') ? 'active' : ''); ?>" href="<?php echo e(url('performance-indicator')); ?>"> Performance Indicator </a>
-                            </li>
+                            
 
                             
 

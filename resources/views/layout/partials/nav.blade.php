@@ -242,9 +242,9 @@
                         <a href="#"><i class="la la-graduation-cap"></i> <span> Performance </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <li>
+                            {{-- <li>
                                 <a class="{{ Request::is('performance-indicator') ? 'active' : '' }}" href="{{ url('performance-indicator') }}"> Performance Indicator </a>
-                            </li>
+                            </li> --}}
 
                             {{-- <li>
                                 <a class="{{ Request::is('performance') ? 'active' : '' }}" href="{{ url('performance') }}"> Performance Review </a>
