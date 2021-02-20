@@ -56,4 +56,14 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\PersonalInfo');
     }
+
+    public function emegency_contact()
+    {
+        return $this->hasOne('App\EmergencyContact');
+    }
+
+    public function family_info()
+    {
+        return $this->hasMany('App\FamilyInfo');
+    }
 }

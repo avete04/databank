@@ -122,10 +122,153 @@
             }
         });
     }
+
+    function add_emergency()
+    {
+        let data = {
+            user_id:emp_id,
+            name:emergency_name.value,
+            relationship:relationship.value,
+            contact_no:contact_no.value
+        }
+
+        axios.post(`{{route('emergency_contact.add')}}`, data).then(res => {
+            if(res.data.status == 1)
+            {
+                Swal.fire(
+                    'Success',
+                    res.data.message,
+                    'success'
+                )
+
+                setTimeout(() => {
+                    location.reload();
+                }, 500)
+            }
+        });
+    }
+
+    get_emergency()
+    function get_emergency()
+    {
+
+        axios.get(`/get_emergency_contact/${emp_id}`).then(res => {
+            $('#profile_emergency_name').text(res.data.name);
+            $('#profile_relationship').text(res.data.relationship);
+            $('#profile_contact_no').text(res.data.contact_no);
+
+            $('#emergency_name').val(res.data.name);
+            $('#relationship').val(res.data.relationship);
+            $('#contact_no').val(res.data.contact_no);
+        });
+    }
+
+    function add_family_info()
+    {
+        let data = {
+            user_id:emp_id,
+            name:add_family_name.value,
+            relationship:add_family_relationship.value,
+            birth_day:add_family_birthday.value,
+            contact_no:add_family_contact_no.value
+        }
+
+        axios.post(`{{route('family_info.add')}}`,data).then(res => {
+            if(res.data.status == 1)
+            {
+                Swal.fire(
+                    'Success',
+                    res.data.message,
+                    'success'
+                )
+
+                setTimeout(() => {
+                    location.reload();
+                }, 500)
+            }
+        });
+    }
+
+    get_family_info()
+    let FamilyInfo = [];
+    function get_family_info()
+    {
+        axios.get(`{{route('family_info.get')}}`).then(res => {
+            if(res.data.status == 1)
+            {
+                FamilyInfo  = res.data.message;
+                FamilyInfo.forEach(e => {
+                    if(e.user_id == emp_id)
+                    {
+                        $('#family_info_table').append(
+                            `
+                            <tr>
+                                <td>${e.name}</td>
+                                <td>${e.relationship}</td>
+                                <td>${e.birth_day}</td>
+                                <td>${e.contact_no}</td>
+                                <td class="text-right">
+                                    <div class="dropdown dropdown-action">
+                                        <a style="cursor:pointer" aria-expanded="false" data-toggle="dropdown" class="action-icon dropdown-toggle"><i class="material-icons">more_vert</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <button class="dropdown-item" onclick="edit_family_info(${e.id})" data-toggle="modal" data-target="#edit_family_info_modal"><i class="fa fa-pencil m-r-5"></i> Edit</button>
+                                            <button class="dropdown-item"><i class="fa fa-trash-o m-r-5"></i> Delete</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            `
+                        )
+                    }
+                });
+            }
+        });
+    }
+
+    function edit_family_info(id)
+    {
+        FamilyInfo.forEach(e => {
+            if(e.id == id)
+            {
+                $('#family_info_id').val(id);
+                $('#edit_family_name').val(e.name);
+                $('#edit_family_relationship').val(e.relationship);
+                $('#edit_family_birthday').val(e.birth_day);
+                $('#edit_family_contact_no').val(e.contact_no);
+            }
+        });
+    }
+
+    function update_family_info()
+    {
+        let data = {
+            family_id:$('#family_info_id').val(),
+            name:$('#edit_family_name').val(),
+            relationship:$('#edit_family_relationship').val(),
+            birth_day:$('#edit_family_birthday').val(),
+            contact_no:$('#edit_family_contact_no').val()
+        }
+
+        axios.post(`{{route('family_info.update')}}`, data).then(res => {
+            if(res.data.status == 1)
+            {
+                Swal.fire(
+                    'Success',
+                    res.data.message,
+                    'success'
+                )
+
+                setTimeout(() => {
+                    location.reload();
+                }, 500)
+            }
+        });
+    }
 </script>
 
 <!-- Page Wrapper -->
 <div class="page-wrapper">
+
 
             <!-- Page Content -->
             <div class="content container-fluid">
@@ -244,19 +387,18 @@
                                 <div class="card profile-box flex-fill">
                                     <div class="card-body">
                                         <h3 class="card-title">Emergency Contact <a href="#" class="edit-icon" data-toggle="modal" data-target="#emergency_contact_modal"><i class="fa fa-pencil"></i></a></h3>
-                                        <h5 class="section-title">Primary</h5>
                                         <ul class="personal-info">
                                             <li>
                                                 <div class="title">Name</div>
-                                                <div class="text">John Doe</div>
+                                                <div class="text" id="profile_emergency_name"></div>
                                             </li>
                                             <li>
                                                 <div class="title">Relationship</div>
-                                                <div class="text">Father</div>
+                                                <div class="text" id="profile_relationship"></div>
                                             </li>
                                             <li>
                                                 <div class="title">Phone </div>
-                                                <div class="text">9876543210, 9876543210</div>
+                                                <div class="text" id="profile_contact_no"></div>
                                             </li>
                                         </ul>
                                     </div>
@@ -279,22 +421,8 @@
                                                         <th></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Leo</td>
-                                                        <td>Brother</td>
-                                                        <td>Feb 16th, 2019</td>
-                                                        <td>9876543210</td>
-                                                        <td class="text-right">
-                                                            <div class="dropdown dropdown-action">
-                                                                <a aria-expanded="false" data-toggle="dropdown" class="action-icon dropdown-toggle" href="#"><i class="material-icons">more_vert</i></a>
-                                                                <div class="dropdown-menu dropdown-menu-right">
-                                                                    <a href="#" class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                                    <a href="#" class="dropdown-item"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                <tbody id="family_info_table">
+                                                    
                                                 </tbody>
                                             </table>
                                         </div>
@@ -571,77 +699,43 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form action="javascript:void(0)">
                                 <div class="form-scroll">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h3 class="card-title">Family Member <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
+                                            <h3 class="card-title">Family Member</h3>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
+                                                    <input type="hidden" id="family_info_id">
                                                         <label>Name <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text">
+                                                        <input class="form-control" type="text" id="add_family_name">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Relationship <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text">
+                                                        <input class="form-control" type="text" id="add_family_relationship">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Date of birth <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text">
+                                                        <input class="form-control" type="date" id="add_family_birthday">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Phone <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text">
+                                                        <input class="form-control" type="text" id="add_family_contact_no">
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Name <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Relationship <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Date of birth <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Phone <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="add-more">
-                                                <a href="javascript:void(0);"><i class="fa fa-plus-circle"></i> Add More</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button class="btn btn-primary submit-btn" onclick="add_family_info()">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -649,6 +743,61 @@
                 </div>
             </div>
             <!-- /Family Info Modal -->
+
+            <!-- Edit Family Info Modal -->
+            <div id="edit_family_info_modal" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Family Informations</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="javascript:void(0)">
+                                <div class="form-scroll">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h3 class="card-title">Family Member</h3>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Name <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="text" id="edit_family_name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Relationship <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="text" id="edit_family_relationship">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Date of birth <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="date" id="edit_family_birthday">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Phone <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="text" id="edit_family_contact_no">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-section">
+                                    <button class="btn btn-primary submit-btn" onclick="update_family_info()">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Edit Family Info Modal -->
 
             <!-- Emergency Contact Modal -->
             <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
@@ -661,7 +810,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form action="javascript:void(0)">
                                 <div class="card">
                                     <div class="card-body">
                                         <h3 class="card-title">Primary Contact</h3>
@@ -669,32 +818,26 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Name <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control">
+                                                    <input type="text" class="form-control" id="emergency_name">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Relationship <span class="text-danger">*</span></label>
-                                                    <input class="form-control" type="text">
+                                                    <input class="form-control" type="text" id="relationship">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Phone <span class="text-danger">*</span></label>
-                                                    <input class="form-control" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Phone 2</label>
-                                                    <input class="form-control" type="text">
+                                                    <input class="form-control" type="text" id="contact_no">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button class="btn btn-primary submit-btn" onclick="add_emergency()">Submit</button>
                                 </div>
                             </form>
                         </div>

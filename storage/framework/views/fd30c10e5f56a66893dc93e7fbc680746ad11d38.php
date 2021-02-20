@@ -9,6 +9,8 @@
         <meta name="robots" content="noindex, nofollow">
         <title>Login - Employee Databank</title>
 
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+
 		<!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
 
@@ -47,10 +49,10 @@
 							<p class="account-subtitle">Access to our dashboard</p>
 
 							<!-- Account Form -->
-							<form action="index">
+							<form action="javascript:void(0)">
 								<div class="form-group">
 									<label>Email Address</label>
-									<input class="form-control" type="text">
+									<input class="form-control" type="text" id="email">
 								</div>
 								<div class="form-group">
 									<div class="row">
@@ -63,10 +65,10 @@
 											</a>
 										</div>
 									</div>
-									<input class="form-control" type="password">
+									<input class="form-control" type="password" id="password">
 								</div>
 								<div class="form-group text-center">
-									<button class="btn btn-primary account-btn" type="submit">Login</button>
+									<button class="btn btn-primary account-btn" type="submit" onclick="authenticate()">Login</button>
 								</div>
 								<div class="account-footer">
 									<p>Don't have an account yet? <a href="register">Register</a></p>
@@ -90,6 +92,27 @@
 
 		<!-- Custom JS -->
 		<script src="js/app.js"></script>
+
+
+		<script>
+			function authenticate()
+			{
+				let data = {
+					email:email.value,
+					password:password.value
+				}
+				axios.post(`<?php echo e(route('authenticate')); ?>`, data).then(res => {
+					if(res.data.status == 1)
+					{
+						window.location.href = "<?php echo e(route('employees')); ?>";
+					}
+					else
+					{
+						alert('Incorrect email or pssword');
+					}
+				});
+			}
+		</script>
 
     </body>
 </html>
