@@ -47,6 +47,16 @@ Route::get('/get_emergency_contact/{id}', 'EmergencyContactController@get')->nam
 Route::post('/add_family_info', 'FamilyInfoController@add')->name('family_info.add');
 Route::get('/get_family_info', 'FamilyInfoController@get')->name('family_info.get');
 Route::post('/update_family_info', 'FamilyInfoController@update')->name('family_info.update');
+Route::post('/delete_family_info', 'FamilyInfoController@delete')->name('family_info.delete');
+
+
+Route::post('/add_educational_info', 'EducationalInfoController@add')->name('educational_info.add');
+Route::get('/get_educational_info', 'EducationalInfoController@get')->name('educational_info.get');
+Route::post('/update_educational_info', 'EducationalInfoController@update')->name('educational_info.update');
+Route::post('/delete_educational_info', 'EducationalInfoController@delete')->name('educational_info.delete');
+
+
+
 
 
 Route::middleware('auth')->group(function(){

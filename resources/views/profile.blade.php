@@ -17,32 +17,36 @@
         user_id:emp_id
     }
 
-    axios.post("{{route('employee.get')}}", data).then(res => {
-        if(res.data.status == 1)
-        {
-            $('#profile_name').text(`${res.data.message.first_name} ${res.data.message.last_name}`)
-            $('#profile_department_name').text(`${res.data.message.department_name}`)
-            $('#profile_department_name').text(`${res.data.message.department_name}`)
-            $('#profile_designation_name').text(`${res.data.message.designation_name}`)
-            $('#profile_employee_id').text(`Employee ID: ${res.data.message.employee_id}`)
-            $('#profile_join_date').text(`Date of Join: ${res.data.message.join_date}`)
-            $('#profile_mobile_no').text(`${res.data.message.mobile_no}`)
-            $('#profile_email').text(`${res.data.message.email}`)
-            $('#profile_birth_day').text(`${res.data.message.birth_day}`)
-            $('#profile_address').text(`${res.data.message.address}`)
-            $('#profile_gender').text(`${res.data.message.gender}`)
+    get_employee()
+    function get_employee()
+    {
+        axios.post("{{route('employee.get')}}", data).then(res => {
+            if(res.data.status == 1)
+            {
+                $('#profile_name').text(`${res.data.message.first_name} ${res.data.message.last_name}`)
+                $('#profile_department_name').text(`${res.data.message.department_name}`)
+                $('#profile_department_name').text(`${res.data.message.department_name}`)
+                $('#profile_designation_name').text(`${res.data.message.designation_name}`)
+                $('#profile_employee_id').text(`Employee ID: ${res.data.message.employee_id}`)
+                $('#profile_join_date').text(`Date of Join: ${res.data.message.join_date}`)
+                $('#profile_mobile_no').text(`${res.data.message.mobile_no}`)
+                $('#profile_email').text(`${res.data.message.email}`)
+                $('#profile_birth_day').text(`${res.data.message.birth_day}`)
+                $('#profile_address').text(`${res.data.message.address}`)
+                $('#profile_gender').text(`${res.data.message.gender}`)
 
 
-            $('#edit_first_name').val(res.data.message.first_name)
-            $('#edit_last_name').val(res.data.message.last_name)
-            $('#edit_birth_day').val(res.data.message.birth_day)
-            $('#edit_gender').val(res.data.message.gender)
-            $('#edit_address').val(res.data.message.address)
-            $('#edit_mobile_no').val(res.data.message.mobile_no)
-            $('#edit_department_id').val(res.data.message.department_id)
-            $('#edit_designation_id').val(res.data.message.designation_id)
-        }
-    });
+                $('#edit_first_name').val(res.data.message.first_name)
+                $('#edit_last_name').val(res.data.message.last_name)
+                $('#edit_birth_day').val(res.data.message.birth_day)
+                $('#edit_gender').val(res.data.message.gender)
+                $('#edit_address').val(res.data.message.address)
+                $('#edit_mobile_no').val(res.data.message.mobile_no)
+                $('#edit_department_id').val(res.data.message.department_id)
+                $('#edit_designation_id').val(res.data.message.designation_id)
+            }
+        });
+    }
 
     function update_employee()
     {
@@ -67,9 +71,8 @@
                     'success'
                 )
 
-                setTimeout(() => {
-                    location.reload();
-                }, 500);
+                get_employee();
+               
             }
         });
     }
@@ -93,9 +96,9 @@
                     'success'
                 )
 
-                setTimeout(() => {
-                    location.reload();
-                }, 500);
+            get_personal_info();
+        
+                
             }
         });
     }
@@ -141,9 +144,8 @@
                     'success'
                 )
 
-                setTimeout(() => {
-                    location.reload();
-                }, 500)
+                get_emergency();
+                
             }
         });
     }
@@ -151,7 +153,6 @@
     get_emergency()
     function get_emergency()
     {
-
         axios.get(`/get_emergency_contact/${emp_id}`).then(res => {
             $('#profile_emergency_name').text(res.data.name);
             $('#profile_relationship').text(res.data.relationship);
@@ -182,10 +183,16 @@
                     'success'
                 )
 
-                setTimeout(() => {
-                    location.reload();
-                }, 500)
+                 get_family_info();
+                 $('.modal').hide();
+                 $('.modal-backdrop').hide();
             }
+        }).catch(err => {
+            Swal.fire(
+                    'Failed',
+                    'All fields are required',
+                    'error'
+                )
         });
     }
 
@@ -194,6 +201,7 @@
     function get_family_info()
     {
         axios.get(`{{route('family_info.get')}}`).then(res => {
+            $('#family_info_table').html('');
             if(res.data.status == 1)
             {
                 FamilyInfo  = res.data.message;
@@ -212,7 +220,7 @@
                                         <a style="cursor:pointer" aria-expanded="false" data-toggle="dropdown" class="action-icon dropdown-toggle"><i class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <button class="dropdown-item" onclick="edit_family_info(${e.id})" data-toggle="modal" data-target="#edit_family_info_modal"><i class="fa fa-pencil m-r-5"></i> Edit</button>
-                                            <button class="dropdown-item"><i class="fa fa-trash-o m-r-5"></i> Delete</button>
+                                            <button class="dropdown-item" onclick="delete_family_info(${e.id})"><i class="fa fa-trash-o m-r-5"></i> Delete</button>
                                         </div>
                                     </div>
                                 </td>
@@ -258,12 +266,181 @@
                     'success'
                 )
 
-                setTimeout(() => {
-                    location.reload();
-                }, 500)
+                get_family_info();
             }
         });
     }
+
+    function delete_family_info(id)
+    {
+        let data = {
+            family_id:id
+        }
+
+        Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                axios.post(`{{route('family_info.delete')}}`, data).then(res => {
+                if(res.data.status == 1)
+                {
+                    Swal.fire(
+                        'Success',
+                        res.data.message,
+                        'success'
+                    );
+
+                    get_family_info();
+
+                }
+            });
+                
+            }
+        })
+    }
+
+    function add_educational_info()
+    {
+        let data = {
+            user_id:emp_id,
+            school:add_school.value,
+            course:add_course.value,
+            start:add_start.value,
+            end:add_end.value
+        }
+
+        axios.post(`{{route('educational_info.add')}}`,data).then(res => {
+            if(res.data.status == 1)
+            {
+                Swal.fire(
+                    'Success',
+                    res.data.message,
+                    'success'
+                );
+
+                get_educational_info();
+            }
+        }).catch(err => {
+            Swal.fire(
+                'Failed',
+                'All fields are required',
+                'error'
+            );
+        });
+    }
+
+    let EducationalInfo = [];
+    get_educational_info();
+    function get_educational_info()
+    {
+        axios.get(`{{route('educational_info.get')}}`).then(res => {
+            educational_info_container.innerHTML = ''
+            if(res.data.status == 1)
+            {
+                EducationalInfo = res.data.message;
+                EducationalInfo.forEach(e => {
+                    if(e.user_id == emp_id)
+                    {
+                        $('#educational_info_container').append(`
+                            <li>
+                                <div class="experience-user">
+                                    <div class="before-circle"></div>
+                                </div>
+                                <div class="experience-content">
+                                    <div class="timeline-content">
+                                        <a href="#/" class="name">${e.school}</a>
+                                        <div>${e.course}</div>
+                                        <span class="time">${e.start} - ${e.end}</span>
+                                    </div>
+                                    <a style="cursor:pointer" data-toggle="modal" data-target="#edit_education_info" onclick="edit_educational_info(${e.id})"><i class="fa fa-edit"></i></a>
+                                    <a style="cursor:pointer" onclick="delete_educational(${e.id})"><i class="fa fa-trash-o text-danger ml-2"></i></a>
+                                </div>
+                            </li>
+                        `)
+                    }
+                });
+            }
+        });
+    }
+
+    function edit_educational_info(id)
+    {
+        EducationalInfo.forEach(e => {
+            if(e.id == id)
+            {
+                $('#educational_info_id').val(id);
+                $('#edit_school').val(e.school);
+                $('#edit_course').val(e.course);
+                $('#edit_start').val(e.start);
+                $('#edit_end').val(e.end);
+            }
+        });
+    }
+
+    function update_educational_info()
+    {
+        let data = {
+            id:educational_info_id.value,
+            user_id:emp_id,
+            school:$('#edit_school').val(),
+            course:$('#edit_course').val(),
+            start:$('#edit_start').val(),
+            end:$('#edit_end').val()
+        }
+
+        axios.post(`{{route('educational_info.update')}}`, data).then(res => {
+            if(res.data.status == 1)
+            {
+                Swal.fire(
+                    'Success',
+                    res.data.message,
+                    'success'
+                );
+                get_educational_info();
+            }
+        });
+    }
+
+    function delete_educational(id)
+    {
+        let data = {
+            id:id
+        }
+
+        Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.post(`{{route('educational_info.delete')}}`, data).then(res => {
+                    if(res.data.status == 1)
+                    {
+                        Swal.fire(
+                            'Success',
+                            res.data.message,
+                            'success'
+                        );
+                        get_educational_info();
+                    }
+                });
+            }
+        })
+
+        
+    }
+
 </script>
 
 <!-- Page Wrapper -->
@@ -436,31 +613,8 @@
                                     <div class="card-body">
                                         <h3 class="card-title">Education Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#education_info"><i class="fa fa-pencil"></i></a></h3>
                                         <div class="experience-box">
-                                            <ul class="experience-list">
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">International College of Arts and Science (UG)</a>
-                                                            <div>Bsc Computer Science</div>
-                                                            <span class="time">2000 - 2003</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">International College of Arts and Science (PG)</a>
-                                                            <div>Msc Computer Science</div>
-                                                            <span class="time">2000 - 2003</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                            <ul class="experience-list" id="educational_info_container">
+                                                
                                             </ul>
                                         </div>
                                     </div>
@@ -857,28 +1011,29 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form action="javascript:void(0)">
                                 <div class="form-scroll">
                                     <div class="card">
+                                    <input type="hidden" id="educational_info_id">
                                         <div class="card-body">
                                             <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
-                                                        <input type="text" value="Oxford University" class="form-control floating">
-                                                        <label class="focus-label">Institution</label>
+                                                        <input type="text" class="form-control floating" id="add_school">
+                                                        <label class="focus-label">School</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
-                                                        <input type="text" value="Computer Science" class="form-control floating">
-                                                        <label class="focus-label">Subject</label>
+                                                        <input type="text" class="form-control floating" id="add_course">
+                                                        <label class="focus-label">Course/Level</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
                                                         <div class="cal-icon">
-                                                            <input type="text" value="01/06/2002" class="form-control floating datetimepicker">
+                                                            <input type="date" class="form-control" id="add_start">
                                                         </div>
                                                         <label class="focus-label">Starting Date</label>
                                                     </div>
@@ -886,80 +1041,17 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus focused">
                                                         <div class="cal-icon">
-                                                            <input type="text" value="31/05/2006" class="form-control floating datetimepicker">
+                                                            <input type="date" class="form-control" id="add_end">
                                                         </div>
                                                         <label class="focus-label">Complete Date</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <input type="text" value="BE Computer Science" class="form-control floating">
-                                                        <label class="focus-label">Degree</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <input type="text" value="Grade A" class="form-control floating">
-                                                        <label class="focus-label">Grade</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <input type="text" value="Oxford University" class="form-control floating">
-                                                        <label class="focus-label">Institution</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <input type="text" value="Computer Science" class="form-control floating">
-                                                        <label class="focus-label">Subject</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <div class="cal-icon">
-                                                            <input type="text" value="01/06/2002" class="form-control floating datetimepicker">
-                                                        </div>
-                                                        <label class="focus-label">Starting Date</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <div class="cal-icon">
-                                                            <input type="text" value="31/05/2006" class="form-control floating datetimepicker">
-                                                        </div>
-                                                        <label class="focus-label">Complete Date</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <input type="text" value="BE Computer Science" class="form-control floating">
-                                                        <label class="focus-label">Degree</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus focused">
-                                                        <input type="text" value="Grade A" class="form-control floating">
-                                                        <label class="focus-label">Grade</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="add-more">
-                                                <a href="javascript:void(0);"><i class="fa fa-plus-circle"></i> Add More</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button class="btn btn-primary submit-btn" onclick="add_educational_info()">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -967,6 +1059,65 @@
                 </div>
             </div>
             <!-- /Education Modal -->
+
+            <!-- EDIT Education Modal -->
+            <div id="edit_education_info" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"> Edit Education Informations</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="javascript:void(0)">
+                                <div class="form-scroll">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h3 class="card-title">Education Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group form-focus focused">
+                                                        <input type="text" class="form-control floating" id="edit_school">
+                                                        <label class="focus-label">School</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group form-focus focused">
+                                                        <input type="text" class="form-control floating" id="edit_course">
+                                                        <label class="focus-label">Course/Level</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group form-focus focused">
+                                                        <div class="cal-icon">
+                                                            <input type="date" class="form-control" id="edit_start">
+                                                        </div>
+                                                        <label class="focus-label">Starting Date</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group form-focus focused">
+                                                        <div class="cal-icon">
+                                                            <input type="date" class="form-control" id="edit_end">
+                                                        </div>
+                                                        <label class="focus-label">Complete Date</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-section">
+                                    <button class="btn btn-primary submit-btn" onclick="update_educational_info()">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /EDIT Education Modal -->
 
             <!-- Experience Modal -->
             <div id="experience_info" class="modal custom-modal fade" role="dialog">

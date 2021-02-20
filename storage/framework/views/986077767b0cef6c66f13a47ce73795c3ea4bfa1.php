@@ -56,6 +56,7 @@
     function get_all_employee()
     {
         axios.get("<?php echo e(route('employee.get_all')); ?>").then(res => {
+             $('#user_container').html('');
             res.data.message.forEach(e => {
                 $('#user_container').append(`
                     <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
@@ -124,9 +125,8 @@
                     'success'
                 )
 
-                setTimeout(() => {
-                    location.reload();
-                }, 500);
+                get_all_employee();
+
             }
         });
     }
@@ -156,9 +156,8 @@
                             'success'
                         )
 
-                        setTimeout(() => {
-                            location.reload();
-                        }, 500);
+                        get_all_employee();
+
                     }
                 });
             }

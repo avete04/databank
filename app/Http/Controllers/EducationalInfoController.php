@@ -5,23 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\FamilyInfo;
-use App\User;
+use App\EducationalInfo;
 
-class FamilyInfoController extends Controller
+class EducationalInfoController extends Controller
 {
     public function add(Request $request)
     {
-        $family_info = new FamilyInfo($request->all());
+        $educational_info = new EducationalInfo($request->all());
 
-        if($family_info->save())
+        if($educational_info->save())
         {
             return response()->json([
                 'status' => 1,
-                'message' => 'Data addded'
+                'message' => 'Data added'
             ]);
         }
-        else 
+        else
         {
             return response()->json([
                 'status' => 0,
@@ -32,55 +31,52 @@ class FamilyInfoController extends Controller
 
     public function get()
     {
-        $family_info = FamilyInfo::all();
+        $educational_info = EducationalInfo::all();
 
-        if($family_info->count() > 0)
+        if($educational_info->count() > 0)
         {
             return response()->json([
                 'status' => 1,
-                'message' => $family_info
+                'message' => $educational_info
             ]);
         }
-        else
+        else 
         {
             return response()->json([
                 'status' => 0,
                 'message' => 'No data found'
-            ]);
+            ]); 
         }
     }
 
     public function update(Request $request)
     {
-        $family_info = FamilyInfo::find($request->get('family_id'));
+        $educational_info = EducationalInfo::find($request->get('id'));
 
-        if($family_info)
+        if($educational_info)
         {
-            $family_info->update($request->all());
-            $family_info->save();
+            $educational_info->update([
+                'school' => $request->get('school'),
+                'course' => $request->get('course'),
+                'start' => $request->get('start'),
+                'end' => $request->get('end')
+            ]);
+
+            $educational_info->save();
 
             return response()->json([
                 'status' => 1,
                 'message' => 'Data updated'
             ]);
-        }
-        else
-        {
-            return response()->json([
-                'status' => 0,
-                'message' => 'Failed to update data'
-            ]);
-        }
+        }   
     }
 
-    public function delete(Request $request)
+    function delete(Request $request)
     {
-        $family_info = FamilyInfo::find($request->get('family_id'));
-
-        if($family_info)
+        $educational_info = EducationalInfo::find($request->get('id'));
+        if($educational_info)
         {
-            $family_info->delete();
-
+            $educational_info->delete();
             return response()->json([
                 'status' => 1,
                 'message' => 'Data deleted'
