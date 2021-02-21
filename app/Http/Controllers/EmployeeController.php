@@ -148,4 +148,31 @@ class EmployeeController extends Controller
         }
     }
 
+    public function upload_profile_image(Request $request)
+    {
+        $user = User::find($request->get('user_id'));
+
+        if($request->hasFile('profile_image'))
+        {
+            $uploadedImage = $request->file('profile_image');
+            $imageName = 'profile-'.time() . '.' . $uploadedImage->getClientOriginalExtension();
+            $destinationPath = public_path('/images/profile');
+            $uploadedImage->move($destinationPath, $imageName);
+            $user->profile_image = '/images/profile/' . $imageName;
+        }
+        else
+        {
+            unlink(public_path($user->profile_image));
+            $uploadedImage = $request->file('profile_image');
+            $imageName = 'profile-'.time() . '.' . $uploadedImage->getClientOriginalExtension();
+            $destinationPath = public_path('/images/profile');
+            $uploadedImage->move($destinationPath, $imageName);
+            $user->profile_image = '/images/profile/' . $imageName;
+        }
+
+        $user->save();
+        return back();
+
+    }
+
 }

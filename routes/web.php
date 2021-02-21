@@ -34,6 +34,9 @@ Route::prefix('employee')->group(function(){
     Route::post('/get_employee', 'EmployeeController@get_employee')->name('employee.get');
     Route::post('/update_employee', 'EmployeeController@update_employee')->name('employee.update');
     Route::post('/delete_employee', 'EmployeeController@delete_employee')->name('employee.delete');
+
+    Route::post('/update_profile_employee', 'EmployeeController@upload_profile_image')->name('profile_image.update');
+
 });
 
 Route::post('/add_personal_info', 'PersonalInfoController@add_personal_info')->name('personal_info.create');
@@ -54,6 +57,11 @@ Route::post('/add_educational_info', 'EducationalInfoController@add')->name('edu
 Route::get('/get_educational_info', 'EducationalInfoController@get')->name('educational_info.get');
 Route::post('/update_educational_info', 'EducationalInfoController@update')->name('educational_info.update');
 Route::post('/delete_educational_info', 'EducationalInfoController@delete')->name('educational_info.delete');
+
+
+Route::post('/add_attachment', 'AttachmentController@add')->name('attachment.add');
+Route::get('/get_all_attachment', 'AttachmentController@get_all')->name('attachment.get_all');
+Route::post('/update_attachment', 'AttachmentController@update')->name('attachment.update');
 
 
 

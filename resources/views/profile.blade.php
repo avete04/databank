@@ -25,6 +25,11 @@
         axios.post("{{route('employee.get')}}", data).then(res => {
             if(res.data.status == 1)
             {
+                $('#user_id').val(emp_id);
+                $('#user_id2').val(emp_id);
+
+                $('.user_image').attr('src', res.data.message.profile_image)
+
                 $('#profile_name').text(`${res.data.message.first_name} ${res.data.message.last_name}`)
                 $('#profile_department_name').text(`${res.data.message.department_name}`)
                 $('#profile_department_name').text(`${res.data.message.department_name}`)
@@ -442,8 +447,54 @@
                 });
             }
         })
+    }
 
-        
+    let Attachment = [];
+    get_all_attachment();
+    function get_all_attachment()
+    {
+        axios.get(`{{route('attachment.get_all')}}`).then(res => {
+            if(res.data.status == 1)
+            {
+                Attachment = res.data.message;
+                Attachment.forEach(e => {
+                    if(e.user_id == emp_id)
+                    {
+                        $('#attachment_container').append(`
+                        
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <label><h3>${e.file_name}</h3></label>
+                                        <u class="float-right" style="cursor:pointer" data-toggle="modal" data-target="#edit_attachment" onclick="edit_attachment(${e.id})">Edit</u>
+                                        <br>
+                                        <a href="${e.file}"><img src="${e.file}" width="300px" height="200px"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        `)
+                    }
+                })
+            }
+        });
+    }
+
+    function edit_attachment(id)
+    {
+        Attachment.forEach(e => {
+            if(e.id == id)
+            {
+                $('#attachment_preview').attr('src', e.file)
+                $('#attachment_id').val(e.id)
+                $('#edit_file_name').val(e.file_name)
+            }
+        })
+    }
+
+    function upload_profile_image()
+    { 
+        $("#profile_image_form").submit();
     }
 
 </script>
@@ -476,7 +527,7 @@
                                 <div class="profile-view">
                                     <div class="profile-img-wrap">
                                         <div class="profile-img">
-                                            <a href="#"><img alt="" src="img/profiles/avatar-02.jpg"></a>
+                                            <a href="#"><img alt="" class="user_image" src="img/profiles/avatar-02.jpg" id="user_image"></a>
                                         </div>
                                     </div>
                                     <div class="profile-basic">
@@ -680,29 +731,19 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <label>Add File:</label>
-                                        <input type="file" class="form-control">
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                        add
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        
-                                    </div>
-                                </div>
-                            </div>
-
-                            
                         </div>
+
+                        <div class="row" id="attachment_container">
+
+                        </div>
+                          
                     </div>
                     <!-- /Projects Tab -->
 
@@ -722,16 +763,21 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="javascript:void(0)">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="profile-img-wrap edit-img">
-                                            <img class="inline-block" src="img/profiles/avatar-02.jpg" alt="user">
+                                            <form id="profile_image_form" method="POST" action="{{route('profile_image.update')}}" enctype="multipart/form-data">
+                                                @csrf
+                                                <img class="inline-block user_image" src="img/profiles/avatar-02.jpg" alt="user">
                                             <div class="fileupload btn">
                                                 <span class="btn-text">edit</span>
-                                                <input class="upload" type="file">
+                                                <input type="hidden" name="user_id" id="user_id2">
+                                                <input class="upload" type="file" name="profile_image" id="profile_image" onchange="upload_profile_image(this)">
                                             </div>
                                         </div>
+                                            </form>
+                                        <form action="javascript:void(0)">
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -1255,4 +1301,70 @@
 
         </div>
         <!-- /Page Wrapper -->
+
+
+        
+
+<!--add attachment Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Attachment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{{route('attachment.add')}}" enctype="multipart/form-data">
+      @csrf
+        <div class="modal-body">
+            <label>File Name</label>
+            <input type="hidden" name="user_id" id="user_id">
+            <input type="text" class="form-control" name="add_file_name" id="add_file_name" required>
+            <br>
+            <label>Attachment</label>
+            <input type="file" class="form-control" name="add_file" id="add_file" required>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!--edit attachment Modal -->
+<div class="modal fade" id="edit_attachment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Attachment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{{route('attachment.update')}}" enctype="multipart/form-data">
+      @csrf
+        <div class="modal-body">
+            <input type="hidden" name="attachment_id" id="attachment_id">
+            <label>File Name</label>
+            <input type="hidden" name="user_id" id="user_id">
+            <input type="text" class="form-control" name="edit_file_name" id="edit_file_name" required>
+            <br>
+            <img src="" width="300px" height="200px" id="attachment_preview">
+            <br>
+            <label>Change Attachment</label>
+            <input type="file" class="form-control" name="edit_file" id="edit_file">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @endsection

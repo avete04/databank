@@ -46,7 +46,7 @@
 
         <li class="nav-item dropdown has-arrow main-drop">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <span class="user-img"><img src="img/profiles/avatar-21.jpg" alt="">
+                <span class="user-img"><img src="<?php echo e(Auth::user()->profile_image); ?>" height="30px" alt="">
                     <span class="status online"></span></span>
                 <span><?php echo e(Auth::user()->first_name); ?></span>
             </a>
