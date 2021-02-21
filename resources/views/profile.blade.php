@@ -676,13 +676,32 @@
                     <!-- Projects Tab -->
                     <div class="tab-pane fade" id="emp_projects">
                         <div class="row">
-                            <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
+                            <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-
+                                        <label>Add File:</label>
+                                        <input type="file" class="form-control">
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            
                         </div>
                     </div>
                     <!-- /Projects Tab -->

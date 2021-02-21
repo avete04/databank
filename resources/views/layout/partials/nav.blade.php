@@ -12,16 +12,17 @@
                         <ul style="display: none;">
 
                             <li>
-                                <a class="{{ Request::is('employees') ? 'active' : '' }}" href="{{ url('employees') }}">All Employees</a>
-                            </li>
-
-                            <li>
                                 <a class="{{ Request::is('departments') ? 'active' : '' }}" href="{{ url('departments') }}">Departments</a>
                             </li>
 
                             <li>
                                 <a class="{{ Request::is('designations') ? 'active' : '' }}" href="{{ url('designations') }}">Designations</a>
                             </li>
+
+                            <li>
+                                <a class="{{ Request::is('employees') ? 'active' : '' }}" href="{{ url('employees') }}">All Employees</a>
+                            </li>
+
                         </ul>
                     </li>
 

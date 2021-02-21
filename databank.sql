@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `dropoffpoints` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table databank.dropoffpoints: ~1 rows (approximately)
+-- Dumping data for table databank.dropoffpoints: ~0 rows (approximately)
 /*!40000 ALTER TABLE `dropoffpoints` DISABLE KEYS */;
 INSERT INTO `dropoffpoints` (`id`, `pahatid_id`, `maps_address`, `address`, `landmark`, `lng`, `lat`, `created_at`, `updated_at`) VALUES
 	(1, 1, 'Test St. 123 East Ave.', '#13B Basa St. West Tapinac', 'null', 14.838600, 120.284200, '2020-12-28 15:36:31', '2020-12-28 15:36:31');
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table databank.migrations: ~8 rows (approximately)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
@@ -187,7 +187,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(5, '2021_02_12_124745_create_personalinfos_table', 1),
 	(6, '2021_02_20_031556_create_emergency_contacts_table', 2),
 	(7, '2021_02_20_064130_create_family_infos_table', 3),
-	(8, '2021_02_20_110207_create_educational_infos_table', 4);
+	(8, '2021_02_20_110207_create_educational_infos_table', 4),
+	(9, '2021_02_20_130438_create_expreiences_table', 5),
+	(10, '2021_02_21_065042_create_attachments_table', 5);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table databank.personalinfos
@@ -226,24 +228,24 @@ CREATE TABLE IF NOT EXISTS `users` (
   `birth_day` date DEFAULT NULL,
   `gender` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `department_id` int(11) NOT NULL,
-  `designation_id` int(11) NOT NULL,
+  `department_id` int(11) DEFAULT NULL,
+  `designation_id` int(11) DEFAULT NULL,
   `user_level` int(11) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `category` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table databank.users: ~4 rows (approximately)
+-- Dumping data for table databank.users: ~2 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `email_verified_at`, `password`, `join_date`, `employee_id`, `mobile_no`, `profile_image`, `birth_day`, `gender`, `address`, `department_id`, `designation_id`, `user_level`, `is_active`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(5, 'Role', 'Febry', 'asdasd@sdasda.com', NULL, '$2y$10$zqHmEr7RDxqaeoTeQ98HzOxyBxp.liy3PGlztKn8iWEKmPqIfMHne', '2021-02-11', 'EM-YAmfw', '1234657', NULL, '2021-02-18', 'Female', 'muntinlupa city', 2, 5, 2, 1, NULL, '2021-02-13 07:40:27', '2021-02-20 13:45:19'),
-	(6, 'vensons', 'taladtad', 'admin@admin.com', NULL, '$2y$10$AVF.Bdpgz4yrRzBBvH6Ok.63RabM2XBc.Td2lPi7/Xtwfw8BehRqK', '2018-04-16', 'EM-qUa4Z', '09052515222', NULL, '2021-02-24', 'Female', 'Cupang Muntinlupa City', 2, 6, 1, 1, NULL, '2021-02-13 07:49:08', '2021-02-20 13:48:30'),
-	(10, 'sample', 'sample', 'sample@sample.com', NULL, '$2y$10$Kxm1EgyA.W0MBeH3hUdTGOw05tcdlfO26LAx7jghlNoB.iIqQ7YJG', '2015-02-10', 'EM-RWiEn', '094515121515', NULL, NULL, NULL, NULL, 4, 6, 2, 1, NULL, '2021-02-14 03:28:35', '2021-02-14 03:28:35'),
-	(11, 'employee', 'employee', 'employee@employee.com', NULL, '$2y$10$IkkLQtvNnEzrv/pGPHJuVOdKwp9rgDpvPDmD7rZK1bGZmhLaqB.fm', '2016-04-23', 'EM-5SSXA', '090514251522', NULL, '1995-02-11', 'Male', 'Cupang Muntinlupa City', 2, 5, 2, 1, NULL, '2021-02-21 03:26:44', '2021-02-21 03:55:03');
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `email_verified_at`, `password`, `join_date`, `employee_id`, `mobile_no`, `profile_image`, `birth_day`, `gender`, `address`, `department_id`, `designation_id`, `user_level`, `is_active`, `remember_token`, `created_at`, `updated_at`, `category`) VALUES
+	(5, 'Roles', 'Febry', 'asdasd@sdasda.com', NULL, '$2y$10$zqHmEr7RDxqaeoTeQ98HzOxyBxp.liy3PGlztKn8iWEKmPqIfMHne', '2021-02-11', 'EM-YAmfw', '1234657', NULL, '2021-02-18', 'Female', 'muntinlupa city', 2, 5, 2, 1, NULL, '2021-02-13 07:40:27', '2021-02-21 06:39:57', 'Regular'),
+	(11, 'Admin', 'Admin', 'admin@admin.com', NULL, '$2y$10$IkkLQtvNnEzrv/pGPHJuVOdKwp9rgDpvPDmD7rZK1bGZmhLaqB.fm', '2016-04-23', 'EM-5SSXA', '090514251522', NULL, '1995-02-11', 'Male', 'Cupang Muntinlupa City', 1, 1, 1, 1, NULL, '2021-02-21 03:26:44', '2021-02-21 03:55:03', NULL),
+	(16, 'Sample', 'Sample', 'sample@sample.com', NULL, '$2y$10$xQORYPMTta.ab1WMxNQqFOD8LwN/2tC29Ky5eWkmh1OHRgVHvgxhy', '2018-04-23', 'EM-MmZNr', '09051425115', NULL, NULL, NULL, NULL, 3, 5, 2, 1, NULL, '2021-02-21 07:29:56', '2021-02-21 07:29:56', NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

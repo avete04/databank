@@ -12,16 +12,17 @@
                         <ul style="display: none;">
 
                             <li>
-                                <a class="<?php echo e(Request::is('employees') ? 'active' : ''); ?>" href="<?php echo e(url('employees')); ?>">All Employees</a>
-                            </li>
-
-                            <li>
                                 <a class="<?php echo e(Request::is('departments') ? 'active' : ''); ?>" href="<?php echo e(url('departments')); ?>">Departments</a>
                             </li>
 
                             <li>
                                 <a class="<?php echo e(Request::is('designations') ? 'active' : ''); ?>" href="<?php echo e(url('designations')); ?>">Designations</a>
                             </li>
+
+                            <li>
+                                <a class="<?php echo e(Request::is('employees') ? 'active' : ''); ?>" href="<?php echo e(url('employees')); ?>">All Employees</a>
+                            </li>
+
                         </ul>
                     </li>
 

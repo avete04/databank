@@ -28,6 +28,7 @@ class User extends Authenticatable
         'birth_day',
         'gender',
         'address',
+        'category',
         'department_id',
         'designation_id',
         'user_level',
@@ -75,5 +76,10 @@ class User extends Authenticatable
     public function experience()
     {
         return $this->hasMany('App\Experience');
+    }
+
+    public function attachment()
+    {
+        return $this->hasMany('App\Attachment');
     }
 }

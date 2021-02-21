@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('content'); ?>
 
 <?php
@@ -67,7 +68,7 @@
                             <div class="dropdown profile-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee" onclick="get_employee(${e.user_id})"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee" onclick="get_employee(${e.user_id}, '${e.employee_id}')"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                     <a class="dropdown-item" href="#" onclick="delete_employee('${e.user_id}')"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                 </div>
                             </div>
@@ -80,15 +81,17 @@
         })
     }
 
-    function get_employee(id)
+    function get_employee(id, u_id)
     {
         let data = {
-            user_id:id
+            user_id:id,
+            unique_id:u_id
         }
 
         axios.post("<?php echo e(route('employee.get')); ?>", data).then(res =>{
             if(res.data.status == 1)
             {
+                $('#category').val(res.data.message.category);
                 $('#edit_first_name').val(res.data.message.first_name);
                 $('#edit_last_name').val(res.data.message.last_name);
                 $('#edit_email').val(res.data.message.email);
@@ -391,6 +394,13 @@
                                                     <option value="<?php echo e($designation->id); ?>"><?php echo e($designation->designation_name); ?></option>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Category <span class="text-danger">*</span></label>
+                                            <input class="form-control" id="category" disabled>
                                         </div>
                                     </div>
                                 </div>

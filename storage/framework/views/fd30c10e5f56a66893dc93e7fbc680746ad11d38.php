@@ -12,7 +12,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
 
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+        <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
 
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -39,7 +39,7 @@
 
 					<!-- Account Logo -->
 					<div class="account-logo">
-						<a href=""><img src="img/logo2.png" alt="Employee Databank"></a>
+						<a href=""><img src="img/logo.png" alt="Employee Databank"></a>
 					</div>
 					<!-- /Account Logo -->
 

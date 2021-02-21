@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->date('birth_day')->nullable();
             $table->string('gender')->nullable();
             $table->string('address')->nullable();
+            $table->string('category');
             $table->integer('department_id');
             $table->integer('designtion_id');
             $table->integer('user_level');

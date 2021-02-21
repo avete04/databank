@@ -62,6 +62,7 @@ class EmployeeController extends Controller
     {
         $employee = User::join('departments', 'users.department_id', '=', 'departments.id')
         ->join('designations', 'users.designation_id', '=', 'designations.id')
+        ->where('user_level', 2)
         ->select('users.id as user_id', 'designations.id as designation_id', 'departments.id as department_id', 'users.*', 'designations.*', 'departments.*')
         ->get();
 
