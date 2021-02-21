@@ -11,9 +11,11 @@
 <script>
     let url = new URL(window.location);
     let emp_id = url.searchParams.get('id');
+    let u_id = url.searchParams.get('unique_id')
 
     let data = {
-        user_id:emp_id
+        user_id:emp_id,
+        unique_id:u_id
     }
 
     get_employee()
@@ -44,6 +46,9 @@
                 $('#edit_department_id').val(res.data.message.department_id)
                 $('#edit_designation_id').val(res.data.message.designation_id)
             }
+        }).catch(err => {
+            $('.page-wrapper').css('display', 'none');
+            alert('Invalid request');
         });
     }
 

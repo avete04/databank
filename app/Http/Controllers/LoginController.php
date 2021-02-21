@@ -17,8 +17,18 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Authentication passed...
+            if(Auth::user()->user_level == 2)
+            {
+                $url = "profile?id=".Auth::user()->id.'&unique_id='.Auth::user()->employee_id;
+            }
+            if(Auth::user()->user_level == 1)
+            {
+                $url = route('employees');
+            }
+
             return response()->json([
-                'status' => 1
+                'status' => 1,
+                'url' => $url
             ]);
         }
     }

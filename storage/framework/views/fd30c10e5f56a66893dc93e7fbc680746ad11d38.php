@@ -104,11 +104,11 @@
 				axios.post(`<?php echo e(route('authenticate')); ?>`, data).then(res => {
 					if(res.data.status == 1)
 					{
-						window.location.href = "<?php echo e(route('employees')); ?>";
+						window.location.href = res.data.url;
 					}
 					else
 					{
-						alert('Incorrect email or pssword');
+						alert('Incorrect email or password');
 					}
 				});
 			}

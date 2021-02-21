@@ -48,11 +48,10 @@
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                 <span class="user-img"><img src="img/profiles/avatar-21.jpg" alt="">
                     <span class="status online"></span></span>
-                <span>Admin</span>
+                <span>{{Auth::user()->first_name}}</span>
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="profile">My Profile</a>
-                <a class="dropdown-item" href="settings">Settings</a>
+                <a class="dropdown-item" href="/profile?id={{Auth::user()->id}}">My Profile </a>
                 <a class="dropdown-item" href="{{route('logout')}}">Logout</a>
             </div>
         </li>
@@ -63,9 +62,8 @@
     <div class="dropdown mobile-user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="profile">My Profile</a>
-            <a class="dropdown-item" href="settings">Settings</a>
-            <a class="dropdown-item" href="login">Logout</a>
+            <a class="dropdown-item" href="/profile?id={{Auth::user()->id}}">My Profile </a>
+            <a class="dropdown-item"href="{{route('logout')}}">Logout</a>
         </div>
     </div>
     <!-- /Mobile Menu -->

@@ -104,11 +104,11 @@
 				axios.post(`{{route('authenticate')}}`, data).then(res => {
 					if(res.data.status == 1)
 					{
-						window.location.href = "{{route('employees')}}";
+						window.location.href = res.data.url;
 					}
 					else
 					{
-						alert('Incorrect email or pssword');
+						alert('Incorrect email or password');
 					}
 				});
 			}

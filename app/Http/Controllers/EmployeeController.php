@@ -84,6 +84,7 @@ class EmployeeController extends Controller
         ->join('designations', 'users.designation_id', '=', 'designations.id')
         ->select('users.id as user_id', 'designations.id as designation_id', 'departments.id as department_id', 'users.*', 'designations.*', 'departments.*')
         ->where('users.id', $request->get('user_id'))
+        ->where('employee_id', $request->get('unique_id'))
         ->first();
 
         if($employee)
