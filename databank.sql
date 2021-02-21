@@ -16,6 +16,26 @@
 CREATE DATABASE IF NOT EXISTS `databank` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `databank`;
 
+-- Dumping structure for table databank.attachments
+CREATE TABLE IF NOT EXISTS `attachments` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table databank.attachments: ~0 rows (approximately)
+/*!40000 ALTER TABLE `attachments` DISABLE KEYS */;
+INSERT INTO `attachments` (`id`, `user_id`, `file_name`, `file`, `created_at`, `updated_at`) VALUES
+	(6, 16, 'CCCC', '/images/attachments/attachment-1613929336.jpg', '2021-02-21 15:14:15', '2021-02-21 17:42:16'),
+	(7, 5, 'dsdsdsds', '/images/attachments/attachment-1613929227.jpg', '2021-02-21 15:14:40', '2021-02-21 17:40:27'),
+	(8, 16, 'Certificate', '/images/attachments/attachment-1613921179.jpg', '2021-02-21 15:26:19', '2021-02-21 15:26:19'),
+	(9, 16, 'New', '/images/attachments/attachment-1613928155.jpg', '2021-02-21 17:22:35', '2021-02-21 17:22:35');
+/*!40000 ALTER TABLE `attachments` ENABLE KEYS */;
+
 -- Dumping structure for table databank.departments
 CREATE TABLE IF NOT EXISTS `departments` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -133,6 +153,18 @@ INSERT INTO `emergency_contacts` (`id`, `user_id`, `name`, `relationship`, `cont
 	(4, 10, 'New', 'Mother', '031626416', '2021-02-20 06:36:27', '2021-02-20 06:36:27');
 /*!40000 ALTER TABLE `emergency_contacts` ENABLE KEYS */;
 
+-- Dumping structure for table databank.expreiences
+CREATE TABLE IF NOT EXISTS `expreiences` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table databank.expreiences: ~0 rows (approximately)
+/*!40000 ALTER TABLE `expreiences` DISABLE KEYS */;
+/*!40000 ALTER TABLE `expreiences` ENABLE KEYS */;
+
 -- Dumping structure for table databank.failed_jobs
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -177,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table databank.migrations: ~8 rows (approximately)
+-- Dumping data for table databank.migrations: ~10 rows (approximately)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_10_12_000000_create_users_table', 1),
@@ -240,12 +272,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table databank.users: ~2 rows (approximately)
+-- Dumping data for table databank.users: ~3 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `email_verified_at`, `password`, `join_date`, `employee_id`, `mobile_no`, `profile_image`, `birth_day`, `gender`, `address`, `department_id`, `designation_id`, `user_level`, `is_active`, `remember_token`, `created_at`, `updated_at`, `category`) VALUES
-	(5, 'Roles', 'Febry', 'asdasd@sdasda.com', NULL, '$2y$10$zqHmEr7RDxqaeoTeQ98HzOxyBxp.liy3PGlztKn8iWEKmPqIfMHne', '2021-02-11', 'EM-YAmfw', '1234657', NULL, '2021-02-18', 'Female', 'muntinlupa city', 2, 5, 2, 1, NULL, '2021-02-13 07:40:27', '2021-02-21 06:39:57', 'Regular'),
+	(5, 'Roles', 'Febry', 'asdasd@sdasda.com', NULL, '$2y$10$zqHmEr7RDxqaeoTeQ98HzOxyBxp.liy3PGlztKn8iWEKmPqIfMHne', '2021-02-11', 'EM-YAmfw', '1234657', '/images/profile/profile-1613928921.jpg', '2021-02-18', 'Female', 'muntinlupa city', 2, 5, 2, 1, NULL, '2021-02-13 07:40:27', '2021-02-21 17:35:21', 'Regular'),
 	(11, 'Admin', 'Admin', 'admin@admin.com', NULL, '$2y$10$IkkLQtvNnEzrv/pGPHJuVOdKwp9rgDpvPDmD7rZK1bGZmhLaqB.fm', '2016-04-23', 'EM-5SSXA', '090514251522', NULL, '1995-02-11', 'Male', 'Cupang Muntinlupa City', 1, 1, 1, 1, NULL, '2021-02-21 03:26:44', '2021-02-21 03:55:03', NULL),
-	(16, 'Sample', 'Sample', 'sample@sample.com', NULL, '$2y$10$xQORYPMTta.ab1WMxNQqFOD8LwN/2tC29Ky5eWkmh1OHRgVHvgxhy', '2018-04-23', 'EM-MmZNr', '09051425115', NULL, NULL, NULL, NULL, 3, 5, 2, 1, NULL, '2021-02-21 07:29:56', '2021-02-21 07:29:56', NULL);
+	(16, 'Sample', 'Sample', 'sample@sample.com', NULL, '$2y$10$xQORYPMTta.ab1WMxNQqFOD8LwN/2tC29Ky5eWkmh1OHRgVHvgxhy', '2018-04-23', 'EM-MmZNr', '09051425115', '/images/profile/profile-1613928964.jpg', '2021-02-25', NULL, NULL, 2, 5, 2, 1, NULL, '2021-02-21 07:29:56', '2021-02-21 17:36:04', NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
