@@ -64,8 +64,12 @@ Route::get('/get_all_attachment', 'AttachmentController@get_all')->name('attachm
 Route::post('/update_attachment', 'AttachmentController@update')->name('attachment.update');
 
 
+Route::post('/add_experience', 'ExperienceController@add_experience')->name('experience.add');
+Route::get('/get_all_experience', 'ExperienceController@get_all')->name('experience.get_all');
 
 
+Route::post('/add_appraisal', 'AppraisalController@add')->name('appraisal.add');
+Route::get('/get_all_users', 'AppraisalController@user')->name('user.get');
 
 Route::middleware('auth')->group(function(){
 

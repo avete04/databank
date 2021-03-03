@@ -1,6 +1,24 @@
 @extends('layout.mainlayout')
 @section('content')
 <!-- Page Wrapper -->
+
+<script>
+let User = [];
+    get_user()
+    function get_user()
+    {
+        axios.get(`{{route('user.get')}}`).then(res => {
+            User = res.data
+            User.forEach(e => {
+                $('#user_select').append(`
+                    <option value="${e.id}">${e.first_name} ${e.last_name}</option>
+                `)
+            })
+        })
+    }
+</script>
+
+
 <div class="page-wrapper">
 			
             <!-- Page Content -->
@@ -233,10 +251,9 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label class="col-form-label">Employee</label>
-                                            <select class="select">
+                                            <select class="select" id="user_select">
                                                 <option>Select Employee</option>
-                                                <option>John Doe</option>
-                                                <option>Mike Litorus</option>
+                                                
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -274,28 +291,8 @@
                                                                             <th colspan="2">Expected Value</th>
                                                                             <th>Set Value</th>
                                                                           </tr>
-                                                                          <tr>
-                                                                            <td scope="row" colspan="2">Customer Experience</td>
-                                                                            <td colspan="2">Intermediate</td>
-                                                                            <td><select name="customer_experience" class="form-control">
-                                                                                <option value="">None</option>
-                                                                                <option value="1"> Beginner</option>
-                                                                                <option value="2"> Intermediate</option>
-                                                                                <option value="3"> Advanced</option>
-                                                                                <option value="4"> Expert / Leader</option>
-                                                                              </select></td>
-                                                                          </tr>
-                                                                          <tr>
-                                                                            <td scope="row" colspan="2">Marketing</td>
-                                                                            <td colspan="2">Advanced</td>
-                                                                            <td><select name="marketing" class="form-control">
-                                                                                <option value="">None</option>
-                                                                                <option value="1"> Beginner</option>
-                                                                                <option value="2"> Intermediate</option>
-                                                                                <option value="3"> Advanced</option>
-                                                                                <option value="4"> Expert / Leader</option>
-                                                                              </select></td>
-                                                                          </tr>
+                                                                          
+                                                                         
                                                                           <tr>
                                                                             <td scope="row" colspan="2">Management</td>
                                                                             <td colspan="2">Advanced</td>
@@ -546,32 +543,8 @@
                                                                                 <th colspan="2">Expected Value</th>
                                                                                 <th>Set Value</th>
                                                                             </tr>
-                                                                            <tr>
-                                                                                <td scope="row" colspan="2">Customer Experience</td>
-                                                                                <td colspan="2">Intermediate</td>
-                                                                                <td>
-                                                                                    <select name="customer_experience" class="form-control">
-                                                                                        <option value="">None</option>
-                                                                                        <option value="1"> Beginner</option>
-                                                                                        <option value="2"> Intermediate</option>
-                                                                                        <option value="3"> Advanced</option>
-                                                                                        <option value="4"> Expert / Leader</option>
-                                                                                    </select>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td scope="row" colspan="2">Marketing</td>
-                                                                                <td colspan="2">Advanced</td>
-                                                                                <td>
-                                                                                    <select name="marketing" class="form-control">
-                                                                                        <option value="">None</option>
-                                                                                        <option value="1"> Beginner</option>
-                                                                                        <option value="2"> Intermediate</option>
-                                                                                        <option value="3"> Advanced</option>
-                                                                                        <option value="4"> Expert / Leader</option>
-                                                                                    </select>
-                                                                                </td>
-                                                                            </tr>
+                                                                           
+                                                                          
                                                                             <tr>
                                                                                 <td scope="row" colspan="2">Management</td>
                                                                                 <td colspan="2">Advanced</td>

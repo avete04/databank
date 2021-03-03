@@ -54,7 +54,8 @@
             }
         }).catch(err => {
             $('.page-wrapper').css('display', 'none');
-            alert('Invalid request');
+            alert('Invalid request you will be logged out');
+            window.location.href = "{{route('logout')}}";
         });
     }
 
@@ -496,6 +497,91 @@
         $("#profile_image_form").submit();
     }
 
+    function add_experience()
+    {
+        let data = {
+            user_id : emp_id,
+            company : add_company.value,
+            position : add_position.value,
+            start : add_exp_start.value,
+            end : add_exp_end.value
+        }
+
+        axios.post(`{{route('experience.add')}}`, data).then(res => {
+            if(res.data.status == 1)
+            {
+                Swal.fire(
+                    'Success',
+                    res.data.message,
+                    'success'
+                );
+            }
+            else 
+            {
+                Swal.fire(
+                    'Failed',
+                    res.data.message,
+                    'Error'
+                );
+            }
+        })
+    }
+
+    let Experience = [];
+    get_all_experience();
+    function get_all_experience()
+    {
+        axios.get("{{route('experience.get_all')}}").then(res => {
+            if(res.data.status == 1)
+            {
+                Experience = res.data.message;
+                Experience.forEach(e => {
+                    if(e.user_id == emp_id)
+                    {
+                        $('#exp-container').append(`
+                            <li>
+                                <div class="experience-user">
+                                    <div class="before-circle"></div>
+                                </div>
+                                <div class="experience-content">
+                                    <div class="timeline-content">
+                                        <a href="#/" class="name">${e.company}</a>
+                                        <br>
+                                        <span class="text-dark">${e.position}</span>
+                                        <span class="time">${e.start} - ${e.end}</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <button class="dropdown-item text-center" onclick="edit_experience(${e.id})" data-toggle="modal" data-target="#edit_experience_modal"><i class="fa fa-pencil"></i></button>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <button class="dropdown-item text-center" onclick="delete_experience(${e.id})"><i class="fa fa-trash-o text-danger"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        `)
+                    }
+                })
+            }
+        })
+    }
+
+    function edit_experience(id)
+    {
+        console.log(id)
+    }
+
+    function delete_experience(id)
+    {
+        console.log(id)
+    }
+
 </script>
 
 <!-- Page Wrapper -->
@@ -680,40 +766,8 @@
                                     <div class="card-body">
                                         <h3 class="card-title">Experience <a href="#" class="edit-icon" data-toggle="modal" data-target="#experience_info"><i class="fa fa-pencil"></i></a></h3>
                                         <div class="experience-box">
-                                            <ul class="experience-list">
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">Web Designer at Zen Corporation</a>
-                                                            <span class="time">Jan 2013 - Present (5 years 2 months)</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">Web Designer at Ron-tech</a>
-                                                            <span class="time">Jan 2013 - Present (5 years 2 months)</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="experience-user">
-                                                        <div class="before-circle"></div>
-                                                    </div>
-                                                    <div class="experience-content">
-                                                        <div class="timeline-content">
-                                                            <a href="#/" class="name">Web Designer at Dalt Technology</a>
-                                                            <span class="time">Jan 2013 - Present (5 years 2 months)</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                            <ul class="experience-list" id="exp-container">
+                                                                                               
                                             </ul>
                                         </div>
                                     </div>
@@ -1188,7 +1242,7 @@
             </div>
             <!-- /EDIT Education Modal -->
 
-            <!-- Experience Modal -->
+            <!--Add Experience Modal -->
             <div id="experience_info" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
@@ -1199,34 +1253,28 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form action="javascript:void(0)">
                                 <div class="form-scroll">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h3 class="card-title">Experience Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
+                                            <h3 class="card-title">Experience Informations</h3>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="Digital Devlopment Inc">
+                                                        <input type="text" class="form-control floating" id="add_company">
                                                         <label class="focus-label">Company Name</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="United States">
-                                                        <label class="focus-label">Location</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="Web Developer">
+                                                        <input type="text" class="form-control floating" id="add_position">
                                                         <label class="focus-label">Job Position</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
                                                         <div class="cal-icon">
-                                                            <input type="text" class="form-control floating datetimepicker" value="01/07/2007">
+                                                            <input type="date" class="form-control" id="add_exp_start">
                                                         </div>
                                                         <label class="focus-label">Period From</label>
                                                     </div>
@@ -1234,62 +1282,17 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group form-focus">
                                                         <div class="cal-icon">
-                                                            <input type="text" class="form-control floating datetimepicker" value="08/06/2018">
+                                                            <input type="date" class="form-control" id="add_exp_end">
                                                         </div>
                                                         <label class="focus-label">Period To</label>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h3 class="card-title">Experience Informations <a href="javascript:void(0);" class="delete-icon"><i class="fa fa-trash-o"></i></a></h3>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="Digital Devlopment Inc">
-                                                        <label class="focus-label">Company Name</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="United States">
-                                                        <label class="focus-label">Location</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <input type="text" class="form-control floating" value="Web Developer">
-                                                        <label class="focus-label">Job Position</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <div class="cal-icon">
-                                                            <input type="text" class="form-control floating datetimepicker" value="01/07/2007">
-                                                        </div>
-                                                        <label class="focus-label">Period From</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-focus">
-                                                        <div class="cal-icon">
-                                                            <input type="text" class="form-control floating datetimepicker" value="08/06/2018">
-                                                        </div>
-                                                        <label class="focus-label">Period To</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="add-more">
-                                                <a href="javascript:void(0);"><i class="fa fa-plus-circle"></i> Add More</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                    <button class="btn btn-primary submit-btn" onclick="add_experience()">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -1297,6 +1300,66 @@
                 </div>
             </div>
             <!-- /Experience Modal -->
+
+
+            <!--Edit Experience Modal -->
+            <div id="edit_experience_modal" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Experience Informations</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="javascript:void(0)">
+                                <div class="form-scroll">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h3 class="card-title">Experience Informations</h3>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group form-focus">
+                                                        <input type="text" class="form-control floating" id="add_company">
+                                                        <label class="focus-label">Company Name</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group form-focus">
+                                                        <input type="text" class="form-control floating" id="add_position">
+                                                        <label class="focus-label">Job Position</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group form-focus">
+                                                        <div class="cal-icon">
+                                                            <input type="date" class="form-control" id="add_exp_start">
+                                                        </div>
+                                                        <label class="focus-label">Period From</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group form-focus">
+                                                        <div class="cal-icon">
+                                                            <input type="date" class="form-control" id="add_exp_end">
+                                                        </div>
+                                                        <label class="focus-label">Period To</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-section">
+                                    <button class="btn btn-primary submit-btn" onclick="add_experience()">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Edit /Experience Modal -->
 
         </div>
         <!-- /Page Wrapper -->

@@ -43,8 +43,8 @@
 		<!-- Main CSS -->
         <link rel="stylesheet" href="css/style.css">
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="<?php echo e(asset('js/axios.js')); ?>"></script>
+        <script src="<?php echo e(asset('js/sweetalert.js')); ?>"></script>
 
     </head>
 <?php /**PATH C:\Users\avenson\Desktop\databank\resources\views/layout/partials/head.blade.php ENDPATH**/ ?>

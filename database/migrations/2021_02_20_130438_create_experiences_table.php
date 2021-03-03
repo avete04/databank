@@ -13,8 +13,13 @@ class CreateExpreiencesTable extends Migration
      */
     public function up()
     {
-        Schema::create('expreiences', function (Blueprint $table) {
+        Schema::create('experiences', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->unsigned();
+            $table->string('company')->nullable();
+            $table->string('position')->nullable();
+            $table->date('start')->nullable();
+            $table->date('end')->nullable();
             $table->timestamps();
         });
     }
