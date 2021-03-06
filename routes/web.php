@@ -69,7 +69,11 @@ Route::get('/get_all_experience', 'ExperienceController@get_all')->name('experie
 
 
 Route::post('/add_appraisal', 'AppraisalController@add')->name('appraisal.add');
+Route::get('/get_all_appraisal', 'AppraisalController@get_all')->name('appraisal.get_all');
+Route::get('/get_appraisal/{id}', 'AppraisalController@get')->name('appraisal.get');
 Route::get('/get_all_users', 'AppraisalController@user')->name('user.get');
+
+
 
 Route::middleware('auth')->group(function(){
 

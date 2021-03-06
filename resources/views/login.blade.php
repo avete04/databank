@@ -29,6 +29,13 @@
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
     </head>
+
+	<style>
+		body {
+			background-image : url("{{asset('img/plmun.jpg')}}");
+			background-size : cover;
+		}
+	</style>
     <body class="account-page">
 
 		<!-- Main Wrapper -->
