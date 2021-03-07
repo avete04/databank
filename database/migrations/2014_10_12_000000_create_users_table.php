@@ -28,8 +28,8 @@ class CreateUsersTable extends Migration
             $table->string('gender')->nullable();
             $table->string('address')->nullable();
             $table->string('category');
-            $table->integer('department_id');
-            $table->integer('designtion_id');
+            $table->integer('department_id')->nullable();
+            $table->integer('designtion_id')->nullable();
             $table->integer('user_level');
             $table->boolean('is_active');
             $table->rememberToken();

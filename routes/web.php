@@ -80,7 +80,17 @@ Route::middleware('auth')->group(function(){
     Route::get('/', function () {
         return view('employees');
     });
+
+    Route::get('/access_registration', function () {
+        return view('access_registration');
+    });
     
+
+    Route::get('/registered_user', function () {
+        return view('registered_user');
+    });
+
+
     Route::get('/home', function () {
         return view('employees');
     });

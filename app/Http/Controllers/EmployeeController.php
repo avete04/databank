@@ -17,29 +17,26 @@ class EmployeeController extends Controller
     {
         $validateData = $request->validate([
             'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
-            'email' => ['required', 'unique:users'],
-            'password' => ['required', 'min:8'],
-            'password_confirmation' => ['required_with', 'same:password', 'min:8']
+            'last_name' => ['required', 'string']
         ]);
 
 
         $employee = new User([
             'first_name' => $request->get('first_name'),
             'last_name' => $request->get('last_name'),
-            'email' => $request->get('email'),
-            'password' => bcrypt($request->get('password')),
-            'join_date' => $request->get('join_date'),
-            'employee_id' => 'EM-'.Str::random(5),
+            'email' => '',
+            'password' => '',
+            'join_date' => '',
+            'employee_id' => '',
             'mobile_no' => $request->get('mobile_no'),
             'profile_image' => null,
             'birth_day' => null,
             'gender' => null,
             'address' => null,
-            'department_id' => $request->get('department_id'),
-            'designation_id' => $request->get('designation_id'),
+            'department_id' => null,
+            'designation_id' => null,
             'user_level' => 2,
-            'is_active' => 1
+            'is_active' => 0
         ]);
 
         if($employee->save())

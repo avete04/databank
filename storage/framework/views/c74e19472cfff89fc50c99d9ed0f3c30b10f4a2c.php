@@ -9,7 +9,7 @@
         <meta name="robots" content="noindex, nofollow">
         <title>Login - Employee Databank</title>
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+		<script src="<?php echo e(asset('js/axios.js')); ?>"></script>
 
 		<!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
@@ -117,6 +117,8 @@
 					{
 						alert('Incorrect email or password');
 					}
+				}).catch(err => {
+					alert('Please contact administrator about your account.')
 				});
 			}
 		</script>
